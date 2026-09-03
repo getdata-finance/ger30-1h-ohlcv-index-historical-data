@@ -4,7 +4,7 @@
 
 ### -> [**Download the full GER30 dataset on getdata.finance**](https://getdata.finance/datasets/ger30)
 
-**GER30 1h OHLCV index historical data** — ultra high-quality 1h OHLCV for **DAX 40 (GER30)**. Clean `time, open, high, low, close, volume` CSV for backtesting, algorithmic trading and quantitative research.
+**GER30 1h OHLCV index historical data** — ultra high-quality 1h OHLCV for **DAX 40 (GER30)**. Clean `datetime, open, high, low, close, volume` CSV for backtesting, algorithmic trading and quantitative research.
 
 ## Table of contents
 
@@ -22,12 +22,12 @@
 ## Why this dataset?
 
 - **Ultra high-quality 1h OHLCV** for **DAX 40 (GER30)** (Index)
-- **Clean CSV schema** — `time, open, high, low, close, volume` (no gaps in formatting)
+- **Clean CSV schema** — `datetime, open, high, low, close, volume` (no gaps in formatting)
 - **Free evaluation sample** on GitHub (`1h`) · **11 timeframes** on [getdata.finance](https://getdata.finance/datasets/ger30) · **39,848** `1h` rows in the full archive
 - Built for **backtesting**, **algorithmic trading** and **quantitative finance** workflows
 - **Weekly refresh** — [getdata.finance](https://getdata.finance) every **Saturday, 8am UTC+0**; GitHub `1h` sample updated in sync
 
-> **Sample on GitHub** · `GER30_1h.csv` (949 rows, `2026-06-26` -> `2026-09-02`, 92.34 KB). **Full archive on [getdata.finance](https://getdata.finance/datasets/ger30)** — **39,848** `1h` rows (full `1m`: 2,331,838), **11 timeframes**, `2019-01-02` -> `2026-09-02`.
+> **Sample on GitHub** · `GER30_1h.csv` (949 rows, `2026-06-26` -> `2026-09-02`, 92.35 KB). **Full archive on [getdata.finance](https://getdata.finance/datasets/ger30)** — **39,848** `1h` rows (full `1m`: 2,331,838), **11 timeframes**, `2019-01-02` -> `2026-09-02`.
 
 ## Download sample
 
@@ -46,7 +46,7 @@ Full archive & live chart on getdata.finance: **[https://getdata.finance/dataset
 | Instrument | DAX 40 (GER30) · Index | DAX 40 (GER30) · Index |
 | Timeframes | `1h` (sample) | **11** — 1m · 3m · 5m · 15m · 30m · 1H · 4H · 12H · 1D · 3D · 1W |
 | 1h rows | 949 | **39,848** |
-| Size | 92.34 KB | full ZIP on [getdata.finance](https://getdata.finance/datasets/ger30) |
+| Size | 92.35 KB | full ZIP on [getdata.finance](https://getdata.finance/datasets/ger30) |
 | Period | `2026-06-26` -> `2026-09-02` | `2019-01-02` -> `2026-09-02` |
 | File | `GER30_1h.csv` | ZIP on [getdata.finance](https://getdata.finance/datasets/ger30) |
 | Coverage report | — | [GER30 coverage](https://getdata.finance/coverage/ger30) |
@@ -73,7 +73,7 @@ First and latest rows from the GitHub sample **`GER30_1h.csv`**:
 
 **First rows**
 
-| time | open | high | low | close | volume |
+| datetime | open | high | low | close | volume |
 | --- | --- | --- | --- | --- | --- |
 | 2026-06-26T14:00:00+00:00 | 24650.13 | 24689.64 | 24587.12 | 24601.64 | 35242.00796 |
 | 2026-06-26T15:00:00+00:00 | 24601.64 | 24699.15 | 24583.16 | 24668.15 | 24663 |
@@ -83,7 +83,7 @@ First and latest rows from the GitHub sample **`GER30_1h.csv`**:
 
 **Last rows**
 
-| time | open | high | low | close | volume |
+| datetime | open | high | low | close | volume |
 | --- | --- | --- | --- | --- | --- |
 | 2026-09-01T18:00:00+00:00 | 25888.87 | 25891.89 | 25807.37 | 25839.37 | 5711 |
 | 2026-09-01T19:00:00+00:00 | 25839.37 | 25857.89 | 25826.12 | 25826.12 | 5949 |
@@ -95,7 +95,7 @@ First and latest rows from the GitHub sample **`GER30_1h.csv`**:
 
 | Column | Description |
 | --- | --- |
-| `time` | Bar open timestamp (UTC, ISO-8601). |
+| `datetime` | Bar open timestamp (UTC, ISO-8601). |
 | `open` | Opening price of the candlestick bar. |
 | `high` | Highest price during the bar. |
 | `low` | Lowest price during the bar. |
@@ -103,7 +103,7 @@ First and latest rows from the GitHub sample **`GER30_1h.csv`**:
 | `volume` | Tick volume (number of price updates) during the bar. |
 
 ```text
-time,open,high,low,close,volume
+datetime,open,high,low,close,volume
 ```
 
 ## Code examples
@@ -113,8 +113,8 @@ time,open,high,low,close,volume
 ```python
 import pandas as pd
 
-df = pd.read_csv('GER30_1h.csv', parse_dates=['time'])
-df.set_index('time', inplace=True)
+df = pd.read_csv('GER30_1h.csv', parse_dates=['datetime'])
+df.set_index('datetime', inplace=True)
 print(df.describe())
 ```
 
@@ -124,8 +124,8 @@ print(df.describe())
 import backtrader as bt
 import pandas as pd
 
-df = pd.read_csv('GER30_1h.csv', parse_dates=['time'])
-df.set_index('time', inplace=True)
+df = pd.read_csv('GER30_1h.csv', parse_dates=['datetime'])
+df.set_index('datetime', inplace=True)
 
 class PandasData(bt.feeds.PandasData):
     params = (('datetime', None), ('open', 'open'), ('high', 'high'),
@@ -143,8 +143,8 @@ cerebro.adddata(PandasData(dataname=df))
 import pandas as pd
 import vectorbt as vbt
 
-df = pd.read_csv('GER30_1h.csv', parse_dates=['time'])
-close = df.set_index('time')['close']
+df = pd.read_csv('GER30_1h.csv', parse_dates=['datetime'])
+close = df.set_index('datetime')['close']
 fast, slow = vbt.MA.run(close, 10), vbt.MA.run(close, 50)
 entries = fast.ma_crossed_above(slow)
 exits = fast.ma_crossed_below(slow)
